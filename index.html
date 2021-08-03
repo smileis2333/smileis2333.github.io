@@ -1,1 +1,65 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        .container {
+            /*background-color: red;*/
+            display: flex;
+            align-items: center;
+        }
+        #in,#out{
+            height: 200px;
+        }
+
+    </style>
+    <script type="text/javascript">
+        function transform(){
+            let inv = document.getElementById("in").value;
+            let parse = JSON.parse(inv);
+            let res = convertEle(parse)
+
+            let layer = 0;
+            for(let char of res){
+                if (char!='{'){
+                    break
+                }
+                layer ++;
+            }
+
+            let  prefix = "int a";
+            for (let i = 0; i < layer; i++) {
+                prefix = prefix+"[]"
+            }
+            document.getElementById("out").value = prefix+"="+res;
+        }
+
+        function convertEle(ele){
+            if (!Array.isArray(ele)){
+                return ele;
+            }
+            let deal = ele.map(e=>convertEle(e));
+            return "{" + deal.join(",")+"}";
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+
+    <textarea id="in">
+    </textarea>
+
+    <div>
+        <button onclick="transform()">
+            转换
+        </button>
+    </div>
+
+    <textarea id="out">
+
+    </textarea>
+
+</div>
+</body>
+</html>
